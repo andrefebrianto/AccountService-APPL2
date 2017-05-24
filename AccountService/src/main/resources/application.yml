@@ -1,0 +1,32 @@
+### Spring properties
+# Service registers under this name
+spring:
+  application:
+    name: Account-Service
+#Configure Database
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-dll: true
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/AccountService
+    username: postgres
+    password: password
+    driverClassName: org.postgresql.Driver
+
+# Discovery Server Access
+eureka:
+    client:
+      serviceUrl:
+        defaultZone: http://localhost:1111/eureka/
+
+# HTTP Server (Tomcat) Port
+server: 
+  port: 2222
+
+# Disable Spring Boot's "Whitelabel" default error page, so we can use our own
+error:
+  whitelabel:
+    enabled: false
+  
