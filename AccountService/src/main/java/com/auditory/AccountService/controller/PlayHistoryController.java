@@ -30,22 +30,39 @@ public class PlayHistoryController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<PlayHistory> getAll()
 	{
-		List<PlayHistory> history =phRepository.findAll();
+		List<PlayHistory> history = null;
+		try {
+			history =phRepository.findAll();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return history;
 	}
 	
 	@RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
 	public List<PlayHistory> findPlayHistoryByStudentId(@PathVariable("studentId") char studentId[])
 	{
-		Student student = accRepository.findOne(studentId);
-		List<PlayHistory> playHistory = phRepository.findByStudent(student);
+		List<PlayHistory> playHistory = null;
+		try {
+			Student student = accRepository.findOne(studentId);
+			playHistory = phRepository.findByStudent(student);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return playHistory;
 	}
 	
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public PlayHistory savePlayHistory(@RequestBody PlayHistory playHistory)
 	{
-		phRepository.save(playHistory);
+		try {
+			phRepository.save(playHistory);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return playHistory;
 	}
 }

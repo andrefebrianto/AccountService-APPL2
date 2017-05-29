@@ -30,22 +30,38 @@ public class UploadController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Upload> getAllUpload()
 	{
-		List<Upload> uploads = upRepository.findAll();
+		List<Upload> uploads = null;
+		try {
+			uploads = upRepository.findAll();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return uploads;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public List<Upload> getAllUploadByStudentId(@PathVariable("id") char id[])
 	{
-		Student student = accRepository.findOne(id);
-		List<Upload> uploads = upRepository.findByStudent(student);
+		List<Upload> uploads = null;
+		try {
+			Student student = accRepository.findOne(id);
+			uploads = upRepository.findByStudent(student);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return uploads;
 	}
 	
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Upload saveUpload(@RequestBody Upload upload)
-	{
-		upRepository.save(upload);
+	{	
+		try {
+			upRepository.save(upload);
+		} catch (Exception e) {
+			// TODO: handle exception\
+			System.err.println(e);
+		}
 		return upload;
 	}
 }

@@ -21,27 +21,49 @@ public class StudentController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Student> getAll()
 	{
-		List<Student> student = repository.findAll();
+		List<Student> student = null;
+		try {
+			student = repository.findAll();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return student;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Student getByStudentId(@PathVariable("id") char id[])
 	{
-		Student student = repository.findOne(id);
+		Student student = null;
+		try {
+			student = repository.findOne(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return student;
 	}
 	
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Student saveAccount(@RequestBody Student student)
 	{
-		repository.save(student);
+		try {
+			repository.save(student);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return student;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteByStudentId(@PathVariable("id") char id[])
 	{
-		repository.delete(id);
+		try {
+			repository.delete(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}		
 	}
 }

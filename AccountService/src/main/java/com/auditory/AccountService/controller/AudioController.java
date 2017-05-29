@@ -22,36 +22,57 @@ public class AudioController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Audio> getAudio(@RequestParam(value = "title", required = false) String title)
 	{
-		List<Audio> audios;
-		if (title != null)
-		{
-			audios = repository.findByAudioTitle(title);
+		List<Audio> audios = null;
+		try {
+			if (title != null)
+			{
+				audios = repository.findByAudioTitle(title);
+			}
+			else
+			{
+				audios = repository.findAll();	
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
 		}
-		else
-		{
-			audios = repository.findAll();	
-		}
+		
 		return audios;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Audio getByAudioId(@PathVariable("id") long id)
 	{
-		Audio audio = new Audio();
-		audio = repository.findOne(id);
+		Audio audio = null;
+		try {
+			audio = repository.findOne(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}		
 		return audio;
 	}
 
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Audio saveAccount(@RequestBody Audio audio)
-	{
-		repository.save(audio);
+	{		
+		try {
+			repository.save(audio);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
 		return audio;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteByStudentId(@PathVariable("id") long id)
 	{
-		repository.delete(id);
+		try {
+			repository.delete(id);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
 	}
 }

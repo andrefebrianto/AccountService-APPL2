@@ -30,22 +30,39 @@ public class DownloadController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Download> getAll()
 	{
-		List<Download> downloads = downRepository.findAll();
+		List<Download> downloads = null;
+		try {
+			downloads = downRepository.findAll();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return downloads;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public List<Download> getDownloadByStudentId(@PathVariable("id") char id[])
 	{
-		Student student = accRepository.findOne(id);
-		List<Download> downloads = downRepository.findByStudent(student);
+		List<Download> downloads = null;
+		try {
+			Student student = accRepository.findOne(id);
+			downloads = downRepository.findByStudent(student);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}
 		return downloads;
 	}
 	
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Download saveDownload(@RequestBody Download download)
 	{
-		downRepository.save(download);
+		try {
+			downRepository.save(download);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e);
+		}	
 		return download;
 	}
 }
