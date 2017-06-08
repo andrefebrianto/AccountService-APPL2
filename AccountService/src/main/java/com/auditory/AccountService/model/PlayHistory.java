@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "PlayHistory", uniqueConstraints = @UniqueConstraint(columnNames = {"account", "datePlayed"}))
@@ -22,20 +25,24 @@ public class PlayHistory implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long playHistoryId;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "studentId", name = "account")
 	private Student student;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "datePlayed", nullable = false)
 	private Date datePlayed;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(referencedColumnName = "audioId")
-	private Audio audio;
+	//@ManyToOne(optional = false)
+	//@JoinColumn(referencedColumnName = "audioId")
+	private long audioId;
 
+	@Transient
+	private Audio audio;
+	
 	public PlayHistory()
 	{
 		
@@ -45,7 +52,7 @@ public class PlayHistory implements Serializable {
 	{
 		this.student = student;
 		this.datePlayed = datePlayed;
-		this.audio = audio;
+		this.audioId = audio.getAudioId();
 	}
 	
 	public void setStudent(Student student)
@@ -67,14 +74,20 @@ public class PlayHistory implements Serializable {
 	{
 		return datePlayed;
 	}
-	
-	public void setAudio(Audio audio)
-	{
-		this.audio = audio;
+
+	public long getAudioId() {
+		return audioId;
 	}
-	
-	public Audio getAudio()
-	{
+
+	public void setAudioId(long audioId) {
+		this.audioId = audioId;
+	}
+
+	public Audio getAudio() {
 		return audio;
+	}
+
+	public void setAudio(Audio audio) {
+		this.audio = audio;
 	}
 }

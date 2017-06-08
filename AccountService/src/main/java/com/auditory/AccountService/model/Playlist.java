@@ -5,14 +5,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "Playlist")
@@ -24,12 +27,13 @@ public class Playlist implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long playlistId;
 	
 	@Column(nullable = false)
 	private String playlistName;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(nullable = false)
 	private Date dateCreated;
 	
@@ -37,8 +41,11 @@ public class Playlist implements Serializable {
 	@JoinColumn(referencedColumnName = "studentId")
 	private Student student;
 	
-	@ManyToMany
-	@JoinColumn(referencedColumnName = "audioId")
+	@Column
+	@ElementCollection(targetClass = Long.class)
+	private List<Long> audioIds;
+	
+	@Transient
 	private List<Audio> audios;
 	
 	public Playlist()
@@ -88,23 +95,29 @@ public class Playlist implements Serializable {
 		return student;
 	}
 	
-	public void addAudio(Audio audio)
+	public void addAudioId(long audioId)
 	{
-		this.audios.add(audio);
+		this.audioIds.add(audioId);
 	}
 	
-	public void removeAudio(Audio audio)
+	public void removeAudioId(long audioId)
 	{
-		this.audios.remove(audio);
+		this.audioIds.remove(audioId);
 	}
-	
-	public List<Audio> getAudios()
-	{
+
+	public List<Long> getAudioIds() {
+		return audioIds;
+	}
+
+	public void setAudiosIds(List<Long> audiosId) {
+		this.audioIds = audiosId;
+	}
+
+	public List<Audio> getAudios() {
 		return audios;
 	}
-	
-	public void setAudios(List<Audio> audios)
-	{
+
+	public void setAudios(List<Audio> audios) {
 		this.audios = audios;
 	}
 }

@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "Download", uniqueConstraints = @UniqueConstraint(columnNames = {"account", "downloadTime"}))
@@ -22,18 +25,21 @@ public class Download implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long downloadId;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "studentId", name = "account")
 	private Student student;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "downloadTime", nullable = false)
 	private Date downloadTime;
 	
-	@ManyToOne(optional = false)
-	@JoinColumn(referencedColumnName = "audioId")
+	@Column(nullable = false)
+	private long audioId;
+
+	@Transient
 	private Audio audio;
 	
 	public Download()
@@ -41,11 +47,16 @@ public class Download implements Serializable {
 		
 	}
 	
-	public Download(Student student, Date downloadTime, Audio audio)
+	public Download(Student student, Date downloadTime, long audioId)
 	{
 		this.student = student;
 		this.downloadTime = downloadTime;
-		this.audio = audio;
+		this.audioId = audioId;
+	}
+	
+	public long getDownloadId()
+	{
+		return downloadId;
 	}
 	
 	public void setStudent(Student student)
@@ -68,13 +79,22 @@ public class Download implements Serializable {
 		return downloadTime;
 	}
 	
+	public void setAudioId(long audioId)
+	{
+		this.audioId = audioId;
+	}
+	
+	public long getAudioId()
+	{
+		return audioId;
+	}
+
 	public void setAudio(Audio audio)
 	{
 		this.audio = audio;
 	}
 	
-	public Audio getAudio()
-	{
+	public Audio getAudio() {
 		return audio;
 	}
 }

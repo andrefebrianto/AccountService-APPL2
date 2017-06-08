@@ -1,34 +1,14 @@
 package com.auditory.AccountService.model;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "Audio")
-public class Audio implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+//@Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Audio{
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
     private long audioId;
-	
-	@Column(nullable = false)
 	private String audioTitle;
-	
-	@Column(nullable = false)
 	private int length;
-	
-	@Column(nullable = false)
 	private String filePath;
 	
 	public Audio()
@@ -36,11 +16,22 @@ public class Audio implements Serializable {
 		
 	}
 	
-	public Audio(String audioTitle, int length, String filePath)
+	public Audio(long audioId)
 	{
+		this.audioId = audioId;
+	}
+	
+	public Audio(long audioId, String audioTitle, int length, String filePath)
+	{
+		this.audioId = audioId;
 		this.audioTitle = audioTitle;
 		this.length = length;
 		this.filePath = filePath;
+	}
+	
+	public void setAudioId(long audioId)
+	{
+		this.audioId = audioId;
 	}
 	
 	public long getAudioId()

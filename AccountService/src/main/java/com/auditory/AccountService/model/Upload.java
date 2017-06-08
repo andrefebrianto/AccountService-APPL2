@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "Upload", uniqueConstraints = @UniqueConstraint(columnNames = {"account", "uploadTime"}))
@@ -23,18 +26,20 @@ public class Upload implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long uploadId;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "studentId", name = "account")
 	private Student student;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "uploadTime", nullable = false)
 	private Date uploadTime;
+
+	private long audioId;
 	
-	@ManyToOne(optional = false)
-	@JoinColumn(referencedColumnName = "audioId")
+	@Transient
 	private Audio audio;
 	
 	public Upload()
@@ -42,11 +47,11 @@ public class Upload implements Serializable {
 		
 	}
 	
-	public Upload(Student student, Date uploadTime, Audio audio)
+	public Upload(Student student, Date uploadTime, long audioId)
 	{
 		this.student = student;
 		this.uploadTime = uploadTime;
-		this.audio = audio;
+		this.audioId = audioId;
 	}
 	
 	public void setStudent(Student student)
@@ -69,13 +74,21 @@ public class Upload implements Serializable {
 		return uploadTime;
 	}
 	
-	public void setAudio(Audio audio)
+	public void setAudioId(long audioId)
 	{
-		this.audio = audio;
+		this.audioId = audioId;
 	}
 	
-	public Audio getAudio()
+	public long getAudioId()
 	{
+		return audioId;
+	}
+
+	public Audio getAudio() {
 		return audio;
+	}
+
+	public void setAudio(Audio audio) {
+		this.audio = audio;
 	}
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 @Entity
 @Table(name = "student")
 public class Student implements Serializable {
@@ -37,7 +39,8 @@ public class Student implements Serializable {
 		this.studentId = studentId;
 		this.email = email;
 		this.name = name;
-		this.password = password;
+		String cryptedPassword = new BCryptPasswordEncoder().encode(password);
+		this.password = cryptedPassword;
 	}
 	
 	public void setStudentId(char[] studentId)
