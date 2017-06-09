@@ -1,6 +1,7 @@
 package com.auditory.AccountService.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,7 @@ public class PlaylistController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Playlist createNewPlaylist(@RequestBody Playlist playlist)
 	{	
+		playlist.setDateCreated(new Date());
 		try {
 			playRepository.save(playlist);
 		} catch (Exception e) {

@@ -3,6 +3,7 @@ package com.auditory.AccountService.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
@@ -29,12 +32,13 @@ public class Upload implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long uploadId;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "studentId", name = "account")
 	private Student student;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "uploadTime", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date uploadTime;
 
 	private long audioId;

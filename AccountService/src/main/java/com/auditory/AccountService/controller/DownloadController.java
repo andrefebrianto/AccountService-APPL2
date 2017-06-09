@@ -1,5 +1,6 @@
 package com.auditory.AccountService.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class DownloadController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Download saveDownload(@RequestBody Download download)
 	{
+		download.setDownloadTime(new Date());
 		try {
 			downRepository.save(download);
 		} catch (Exception e) {

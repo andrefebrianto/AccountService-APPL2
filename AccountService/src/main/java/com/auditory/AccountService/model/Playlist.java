@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,9 +38,10 @@ public class Playlist implements Serializable {
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(nullable = false)
-	private Date dateCreated;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date timeCreated;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "studentId")
 	private Student student;
 	
@@ -56,7 +60,7 @@ public class Playlist implements Serializable {
 	public Playlist(String playlistName, Date dateCreated, Student student)
 	{
 		this.playlistName = playlistName;
-		this.dateCreated = dateCreated;
+		this.timeCreated = dateCreated;
 		this.student = student;
 	}
 	
@@ -77,12 +81,12 @@ public class Playlist implements Serializable {
 	
 	public void setDateCreated(Date dateCreated)
 	{
-		this.dateCreated = dateCreated;
+		this.timeCreated = dateCreated;
 	}
 	
 	public Date getDateCreated()
 	{
-		return dateCreated;
+		return timeCreated;
 	}
 	
 	public void setStudent(Student student)

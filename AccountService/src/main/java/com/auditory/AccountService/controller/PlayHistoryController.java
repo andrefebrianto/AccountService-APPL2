@@ -1,5 +1,6 @@
 package com.auditory.AccountService.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class PlayHistoryController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public PlayHistory savePlayHistory(@RequestBody PlayHistory playHistory)
 	{
+		playHistory.setDatePlayed(new Date());
 		try {
 			phRepository.save(playHistory);
 		} catch (Exception e) {

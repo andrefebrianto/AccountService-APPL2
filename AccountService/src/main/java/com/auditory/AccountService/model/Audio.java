@@ -2,7 +2,6 @@ package com.auditory.AccountService.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-//@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Audio{
 	

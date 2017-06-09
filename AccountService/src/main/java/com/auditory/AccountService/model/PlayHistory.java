@@ -3,6 +3,7 @@ package com.auditory.AccountService.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
@@ -28,13 +31,14 @@ public class PlayHistory implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long playHistoryId;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "studentId", name = "account")
 	private Student student;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@Column(name = "datePlayed", nullable = false)
-	private Date datePlayed;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date timePlayed;
 
 	//@ManyToOne(optional = false)
 	//@JoinColumn(referencedColumnName = "audioId")
@@ -51,7 +55,7 @@ public class PlayHistory implements Serializable {
 	public PlayHistory(Student student, Date datePlayed, Audio audio)
 	{
 		this.student = student;
-		this.datePlayed = datePlayed;
+		this.timePlayed = datePlayed;
 		this.audioId = audio.getAudioId();
 	}
 	
@@ -67,12 +71,12 @@ public class PlayHistory implements Serializable {
 	
 	public void setDatePlayed(Date datePlayed)
 	{
-		this.datePlayed = datePlayed;
+		this.timePlayed = datePlayed;
 	}
 	
 	public Date getDatePlayed()
 	{
-		return datePlayed;
+		return timePlayed;
 	}
 
 	public long getAudioId() {
