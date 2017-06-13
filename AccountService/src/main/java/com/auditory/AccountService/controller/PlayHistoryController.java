@@ -65,7 +65,8 @@ public class PlayHistoryController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public PlayHistory savePlayHistory(@RequestBody PlayHistory playHistory)
 	{
-		playHistory.setDatePlayed(new Date());
+		if(playHistory.getDatePlayed() == null)
+			playHistory.setDatePlayed(new Date());
 		try {
 			phRepository.save(playHistory);
 		} catch (Exception e) {

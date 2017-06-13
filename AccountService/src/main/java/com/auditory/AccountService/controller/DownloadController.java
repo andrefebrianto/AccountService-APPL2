@@ -65,7 +65,8 @@ public class DownloadController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Download saveDownload(@RequestBody Download download)
 	{
-		download.setDownloadTime(new Date());
+		if(download.getDownloadTime() == null)
+			download.setDownloadTime(new Date());
 		try {
 			downRepository.save(download);
 		} catch (Exception e) {

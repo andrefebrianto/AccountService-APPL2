@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -41,7 +40,7 @@ public class Playlist implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeCreated;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "studentId")
 	private Student student;
 	

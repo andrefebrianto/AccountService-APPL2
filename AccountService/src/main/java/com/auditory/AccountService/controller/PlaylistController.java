@@ -66,6 +66,7 @@ public class PlaylistController {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.err.println(e);
 		}
 		return playlists;
 	}
@@ -73,7 +74,8 @@ public class PlaylistController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Playlist createNewPlaylist(@RequestBody Playlist playlist)
 	{	
-		playlist.setDateCreated(new Date());
+		if(playlist.getDateCreated() == null)
+			playlist.setDateCreated(new Date());
 		try {
 			playRepository.save(playlist);
 		} catch (Exception e) {
@@ -93,20 +95,25 @@ public class PlaylistController {
 			System.err.println(e);
 		}
 	}
-/*	
+	
 	@RequestMapping(value = "/{accountId}/{playlistId}", method = RequestMethod.GET)
-	public List<Audio> getAllAudioByPlaylistId(@PathVariable("playlistId") long id)
+	public Playlist getAllAudioByPlaylistId(@PathVariable("playlistId") long id)
 	{
 		Playlist playlist = null;
 		try {
 			playlist = playRepository.findOne(id);
+			List<Audio> audios = new ArrayList<Audio>();
+			for (Long audioId : playlist.getAudioIds()) {
+				audios.add(restTemplate.getForObject("http://localhost:3333/audio/"+audioId, Audio.class));
+			}
+			playlist.setAudios(audios);
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println(e);
 		}
-		return playlist.getAudios();		
+		return playlist;		
 	}
-*/
+
 	@RequestMapping(value = "/{accountId}/{playlistId}/{audioId}", method = RequestMethod.DELETE)
 	public void removeAudioFromPlaylist(@PathVariable("audioId") long audioId, 
 			@PathVariable("playlistId") long playlistId)
@@ -115,10 +122,10 @@ public class PlaylistController {
 		try {
 			playlist = playRepository.findOne(playlistId);
 			playlist.removeAudioId(audioId);
+			playRepository.save(playlist);
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println(e);
 		}
-		playRepository.save(playlist);
 	}
 }

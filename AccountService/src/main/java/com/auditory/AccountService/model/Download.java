@@ -3,7 +3,6 @@ package com.auditory.AccountService.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +19,7 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name = "Download", uniqueConstraints = @UniqueConstraint(columnNames = {"account", "downloadTime"}))
+@Table(name = "Download", uniqueConstraints = @UniqueConstraint(columnNames = {"student", "downloadTime"}))
 public class Download implements Serializable {
 
 	/**
@@ -31,7 +30,7 @@ public class Download implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long downloadId;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false)
 	@JoinColumn(referencedColumnName = "studentId", name = "student")
 	private Student student;
 	

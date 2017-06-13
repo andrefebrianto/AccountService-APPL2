@@ -57,6 +57,7 @@ public class UploadController {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.err.println(e);
 		}
 		return uploads;
 	}
@@ -64,7 +65,8 @@ public class UploadController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	public Upload saveUpload(@RequestBody Upload upload)
 	{	
-		upload.setUploadTime(new Date());
+		if (upload.getUploadTime() == null)
+			upload.setUploadTime(new Date());
 		try {
 			upRepository.save(upload);
 		} catch (Exception e) {
